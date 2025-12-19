@@ -1,0 +1,7 @@
+{
+  "navigationBarTitleText": "评教列表",
+  "navigationBarBackgroundColor": "#1989fa",
+  "navigationBarTextStyle": "white",
+  "enablePullDownRefresh": true,
+  "backgroundTextStyle": "light"
+}

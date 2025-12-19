@@ -1,0 +1,58 @@
+<!-- evaluations.wxml -->
+<view class="container">
+  <!-- 筛选栏 -->
+  <view class="filter-bar">
+    <view class="filter-tabs">
+      <view 
+        wx:for="{{filterTabs}}" 
+        wx:key="id"
+        class="filter-tab {{currentFilter === item.id ? 'active' : ''}}"
+        bindtap="changeFilter" 
+        data-id="{{item.id}}"
+      >
+        {{item.name}}
+      </view>
+    </view>
+  </view>
+
+  <!-- 搜索框 -->
+  <view class="search-bar">
+    <view class="search-input">
+      <image src="../../assets/icons/search.svg" class="search-icon"></image>
+      <input placeholder="搜索课程或教师" value="{{searchText}}" bindinput="onSearchInput" bindconfirm="onSearch" />
+    </view>
+  </view>
+
+  <!-- 评教列表 -->
+  <view class="evaluation-list">
+    <view wx:for="{{filteredEvaluations}}" wx:key="id" class="evaluation-item card fade-in">
+      <view class="course-info">
+        <view class="course-name">{{item.courseName}}</view>
+        <view class="teacher-name">{{item.teacherName}}</view>
+      </view>
+      <view class="evaluation-meta">
+        <view class="deadline">截止日期：{{item.deadline}}</view>
+        <view class="status {{item.status === '待评教' ? 'pending' : 'completed'}}">{{item.status}}</view>
+      </view>
+      <view class="action">
+        <button 
+          class="btn-primary" 
+          bindtap="goToEvaluation" 
+          data-id="{{item.id}}"
+          data-index="{{index}}"
+          disabled="{{item.status !== '待评教'}}"
+        >
+          {{item.status === '待评教' ? '去评教' : '已完成'}}
+        </button>
+      </view>
+    </view>
+
+    <!-- 空状态 -->
+    <view wx:if="{{filteredEvaluations.length === 0}}" class="empty-state">
+      <image src="../../assets/images/empty.svg" class="empty-img"></image>
+      <view class="empty-text" >暂无相关评教信息</view>
+      <text class="empty-desc" wx:if="{{isAuthenticated}}">尝试调整筛选条件或搜索其他关键词</text>
+      <text class="empty-desc" wx:else>当前还没有登录，请登录后使用</text>
+    </view>
+  </view>
+</view>

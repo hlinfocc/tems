@@ -1,0 +1,56 @@
+<!-- profile.wxml -->
+<view class="container">
+  <!-- 用户信息卡片 -->
+  <view class="user-card primary-bg">
+    <!-- 未登录状态 -->
+    <view class="user-info" wx:if="{{!isLoggedIn}}" bindtap="login">
+      <image class="avatar" src="../../assets/images/default_avatar.svg"></image>
+      <view class="user-details">
+        <view class="user-name login-tip">点击登录</view>
+        <view class="login-subtitle">登录后可使用完整功能</view>
+      </view>
+      <view class="login-btn">登录</view>
+    </view>
+    
+    <!-- 已登录状态 -->
+    <view class="user-info" wx:if="{{isLoggedIn}}">
+      <image class="avatar" src="{{studentInfo && studentInfo.avatarUrl ? userInfo.avatarUrl : '../../assets/images/default_avatar.svg'}}"></image>
+      <view class="user-details">
+        <view class="user-name">{{studentInfo ? studentInfo.student_name : '用户'}}</view>
+        <view class="user-id">学号：{{studentInfo ? studentInfo.student_id : '用户ID'}}</view>
+        <view class="user-class" wx:if="studentInfo && studentInfo.class_name">班级：{{studentInfo.class_name}}</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 功能列表 -->
+  <view class="menu-section">
+    <view class="menu-item list-item" bindtap="viewHistory">
+      <view class="menu-text">评教历史</view>
+      <view class="menu-arrow"><image src="../../assets/icons/arrow_right.svg" class="arrow-icon"></image></view>
+    </view>
+    <!-- <view class="menu-item list-item" bindtap="viewScore">
+      <view class="menu-text">成绩查询</view>
+      <view class="menu-arrow"><image src="../../assets/icons/arrow_right.svg" class="arrow-icon"></image></view>
+    </view> -->
+    <!-- <view class="menu-item list-item" bindtap="viewSettings">
+      <view class="menu-text">设置</view>
+      <view class="menu-arrow"><image src="../../assets/icons/arrow_right.svg" class="arrow-icon"></image></view>
+    </view> -->
+  </view>
+
+  <!-- 其他信息 -->
+  <view class="info-section">
+    <view class="info-item">
+      <view class="info-label">已评教数量</view>
+      <view class="info-value">{{completedCount}}</view>
+    </view>
+    <view class="info-item">
+      <view class="info-label">待评教数量</view>
+      <view class="info-value primary-color">{{pendingCount}}</view>
+    </view>
+  </view>
+
+  <!-- 版本信息 -->
+  <view class="version-info">版本 1.0.1</view>
+</view>

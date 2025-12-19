@@ -1,0 +1,26 @@
+<view class="login-container">
+  <view class="login-header">
+    <view class="app-logo">
+      <text class="logo-text">评</text>
+    </view>
+    <view class="app-name">评教系统</view>
+    <view class="app-slogan">快速便捷的课程评价平台</view>
+  </view>
+  
+  <view class="login-content">
+    <view class="login-tips">
+      <text>请使用微信授权登录</text>
+    </view>
+    
+    <button class="login-button" open-type="getPhoneNumber" bind:getphonenumber="getPhoneNumber">
+      <text class="button-text">一键登录</text>
+    </button>
+    
+    <view class="privacy-notice">
+      <text>登录即表示同意</text>
+      <text class="privacy-link" bindtap="viewPrivacy">《隐私政策》</text>
+      <text>和</text>
+      <text class="privacy-link" bindtap="viewTerms">《用户协议》</text>
+    </view>
+  </view>
+</view>

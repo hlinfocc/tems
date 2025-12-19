@@ -1,0 +1,68 @@
+<view class="bind-container">
+  <view class="bind-header">
+    <view class="page-title">绑定学生信息</view>
+    <view class="page-desc">请填写您的真实信息以完成绑定</view>
+  </view>
+  
+  <view class="bind-form">
+    <view class="form-item">
+      <view class="form-label">
+        <text class="label-text">姓名</text>
+        <text class="required">*</text>
+      </view>
+      <input 
+        class="form-input" 
+        placeholder="请输入您的姓名" 
+        bindinput="onNameInput"
+        value="{{studentInfo.name}}"
+      />
+    </view>
+    
+    <view class="form-item">
+      <view class="form-label">
+        <text class="label-text">学号</text>
+        <text class="required">*</text>
+      </view>
+      <input 
+        class="form-input" 
+        placeholder="请输入您的学号" 
+        bindinput="onStudentIdInput"
+        value="{{studentInfo.studentId}}"
+        type="text"
+      />
+    </view>
+    
+    <view class="form-item">
+      <view class="form-label">
+        <text class="label-text">班级</text>
+        <text class="required">*</text>
+      </view>
+      <input 
+        class="form-input" 
+        placeholder="请输入您的班级" 
+        bindinput="onClassInput"
+        value="{{studentInfo.className}}"
+      />
+    </view>
+    
+    <button 
+      class="submit-button" 
+      bindtap="submitForm"
+      disabled="{{!canSubmit || submitting}}"
+    >
+      {{submitting ? '提交中...' : '确认绑定'}}
+    </button>
+    
+    <view class="form-tips">
+      <text>请确保填写的信息真实有效，绑定后将无法修改</text>
+    </view>
+  </view>
+  
+  <!-- 加载遮罩 -->
+  <view class="loading-overlay" wx:if="{{submitting}}">
+    <view class="loading-content">
+      <view class="wx-loading"></view>
+      <view class="loading-text">正在提交...</view>
+    </view>
+  </view>
+</view>

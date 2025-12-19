@@ -1,0 +1,47 @@
+{
+  "compilerOptions": {
+    "target": "esnext",
+    "module": "esnext",
+    "moduleResolution": "node",
+    "jsx": "preserve", /* 指定生成什么JSX代码*/
+    "sourceMap": true, /* 为生成的JavaScript文件创建源映射文件*/
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true, /* 跳过类型检查所有.d.ts文件 */
+    "strict": true, /* 启用所有严格的类型检查选项。 */
+    "allowSyntheticDefaultImports": true,
+    "forceConsistentCasingInFileNames": true,
+    "strictFunctionTypes": false,
+    "lib": ["esnext", "dom"],
+    "types": ["vite/client"], /* vite ts支持 */
+    "noEmit": true,
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"]
+    },
+    "noImplicitAny": false,
+    "noEmitHelpers": false,
+    "noErrorTruncation": false,
+    "noImplicitUseStrict": false,
+    "noEmitOnError": false,
+    "noFallthroughCasesInSwitch": false,
+    "noImplicitOverride": false,
+    "noImplicitReturns": false,
+    "noImplicitThis": false,
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+    "experimentalDecorators": true,
+    "exactOptionalPropertyTypes":false,
+    "noPropertyAccessFromIndexSignature":false
+  },
+  "include": [
+    "src/**/*.d.ts",
+    "src/types/**/*.d.ts",
+    "src/**/*.ts",
+    "src/**/*.tsx",
+    "src/**/*.vue",
+    "release.js"  
+  ],
+  "exclude": ["node_modules"],
+  "compileOnSave": false
+}

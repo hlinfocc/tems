@@ -1,0 +1,43 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/evaluations/evaluations",
+    "pages/profile/profile",
+    "pages/login/login",
+    "pages/bind-student/bind-student",
+    "pages/evaluation/evaluation"
+  ],
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#1989fa",
+    "navigationBarTitleText": "评教系统",
+    "navigationBarTextStyle": "white",
+    "navigationBarType": "default"
+  },
+  "tabBar": {
+    "color": "#999999",
+    "selectedColor": "#1989fa",
+    "backgroundColor": "#ffffff",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "首页",
+        "iconPath": "assets/images/home.png",
+        "selectedIconPath": "assets/images/home-active.png"
+      },
+      {
+        "pagePath": "pages/evaluations/evaluations",
+        "text": "评教列表",
+        "iconPath": "assets/images/evaluation.png",
+        "selectedIconPath": "assets/images/evaluation-active.png"
+      },
+      {
+        "pagePath": "pages/profile/profile",
+        "text": "我的",
+        "iconPath": "assets/images/profile.png",
+        "selectedIconPath": "assets/images/profile-active.png"
+      }
+    ]
+  },
+  "sitemapLocation": "sitemap.json"
+}

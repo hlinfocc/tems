@@ -1,0 +1,63 @@
+<!-- index.wxml -->
+<view class="container">
+  <!-- 装饰元素 -->
+  <view class="decorative-circle circle-1"></view>
+  <view class="decorative-circle circle-2"></view>
+  
+  <!-- 轮播图 -->
+  <view class="swiper-container">
+    <swiper 
+      indicator-dots="true" 
+      indicator-active-color="#ffffff"
+      indicator-color="rgba(255, 255, 255, 0.5)"
+      autoplay="true" 
+      interval="5000" 
+      duration="1000"
+      circular="true"
+      class="swiper"
+    >
+      <swiper-item wx:for="{{banners}}" wx:key="id" class="swiper-item">
+        <image src="{{item.imageUrl}}" class="swiper-img" mode="aspectFill"></image>
+      </swiper-item>
+    </swiper>
+  </view>
+
+  <!-- 评教列表 -->
+  <view class="evaluation-section">
+    <view class="section-wrapper">
+      <view class="section-title">
+        <text class="section-title-text">待评教课程</text>
+      </view>
+      
+      <view class="evaluation-list">
+        <view wx:for="{{evaluations}}" wx:key="id" class="evaluation-item card fade-in">
+          <view class="course-info">
+            <view class="course-name">{{item.courseName}}</view>
+            <view class="teacher-name">
+              <image src="../../assets/icons/profile.svg" class="teacher-icon"></image>
+              {{item.userName}}
+            </view>
+          </view>
+          <view class="evaluation-meta">
+            <view class="deadline">
+              <image src="../../assets/icons/clock.svg" class="deadline-icon"></image>
+              截止日期：{{item.endTime}}
+            </view>
+            <view class="status">{{item.status}}</view>
+          </view>
+          <view class="action">
+            <button class="btn-primary" bindtap="goToEvaluation" data-id="{{item.id}}" data-index="{{index}}">去评教</button>
+          </view>
+        </view>
+        
+        <!-- 空状态 -->
+        <view wx:if="{{evaluations.length === 0}}" class="empty-state">
+          <image src="../../assets/images/empty.svg" class="empty-img"></image>
+          <view class="empty-text">暂无待评教课程</view>
+          <view class="empty-desc" wx:if="{{isAuthenticated}}">所有课程已完成评教，感谢您的参与</view>
+          <view class="empty-desc" wx:else>当前还没有登录，请登录后使用</view>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>

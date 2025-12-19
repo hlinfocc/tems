@@ -1,0 +1,46 @@
+<!-- evaluation.wxml -->
+<view class="container">
+  <!-- 课程信息 -->
+  <view class="course-header card">
+    <view class="course-name">{{evaluation.courseName}}</view>
+    <view class="teacher-name">授课教师：{{evaluation.userName}}</view>
+  </view>
+
+  <!-- 评教表单 -->
+  <view class="evaluation-form card">
+    <view class="form-title">请对本课程进行评价（{{currentIndex}}/{{totalQuestions}}）</view>
+    <view class="question-content">{{currentQuestion.title}}</view>
+    <view class="options">
+      <view 
+        wx:for="{{currentQuestion.options}}" 
+        wx:key="key"
+        class="option-item {{selectedOption === item.key ? 'selected' : ''}}"
+        bindtap="selectOption" 
+        data-value="{{item.key}}"
+        data-index="{{index}}"
+      >
+        <view class="option-radio">
+          <view class="radio-inner {{selectedOption === item.key ? 'active' : ''}}"></view>
+        </view>
+        <view class="option-text">{{ item.key }}：{{item.value}}</view>
+      </view>
+    </view>
+    
+    <view class="comment-section" wx:if="{{currentQuestion.questionType === '10'}}">
+      <textarea placeholder="请输入您的建议或意见" value="{{comment}}" bindinput="inputComment" />
+    </view>
+  </view>
+  <view class="speace-section"></view>
+  <!-- 按钮区域 -->
+  <view class="button-group">
+    <button 
+      class="btn-prev {{currentIndex === 1 ? 'disabled' : ''}}" 
+      bindtap="prevQuestion" 
+      disabled="{{currentIndex === 1}}"
+    >上一题</button>
+    <button 
+      class="btn-next btn-primary" 
+      bindtap="nextQuestion"
+    >{{currentIndex === totalQuestions ? '提交评价' : '下一题'}}</button>
+  </view>
+</view>
