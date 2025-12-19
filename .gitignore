@@ -44,3 +44,5 @@ build/
 **/.svn/
 **/node_modules/
 **/bin/
+web-api/bin/
+web-api/.env
