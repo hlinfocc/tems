@@ -39,6 +39,7 @@ build/
 ## custom ##
 **/dist/
 !assets/dist/
+!web-api/assets/dist/
 /test/
 **/logs/
 **/.svn/
