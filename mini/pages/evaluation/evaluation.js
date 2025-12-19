@@ -94,7 +94,7 @@ Page({
         } else {
           console.error(
             "评教问题接口调用失败:",
-            res.data.message || "未知错误"
+            res.data.msg || "未知错误"
           );
           // 使用模拟评教问题数据作为备用
           this.setData({

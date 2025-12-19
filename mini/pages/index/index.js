@@ -124,7 +124,7 @@ Page({
           }));
           this.setData({ banners });
         } else {
-          console.error('轮播图接口调用失败:', res.data.message || '未知错误');
+          console.error('轮播图接口调用失败:', res.data.msg || '未知错误');
           // 使用模拟轮播图数据作为备用
           this.setData({
             banners: this.getMockBanners()
