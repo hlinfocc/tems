@@ -55,17 +55,17 @@ func GetEvaluationTasks(c *gin.Context) {
 	tasks, err := models.GetActiveTasks()
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
-			"code":    500,
-			"msg": "获取评教任务失败",
-			"error":   err.Error(),
+			"code":  500,
+			"msg":   "获取评教任务失败",
+			"error": err.Error(),
 		})
 		return
 	}
 
 	c.JSON(http.StatusOK, gin.H{
-		"code":    200,
-		"msg": "成功",
-		"data":    tasks,
+		"code": 200,
+		"msg":  "成功",
+		"data": tasks,
 	})
 }
 
@@ -75,8 +75,8 @@ func GetQuestionsBySetID(c *gin.Context) {
 	setID, err := strconv.ParseUint(setIDStr, 10, 32)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
-			"code":    400,
-			"msg": "无效的问题集ID",
+			"code": 400,
+			"msg":  "无效的问题集ID",
 		})
 		return
 	}
@@ -84,17 +84,17 @@ func GetQuestionsBySetID(c *gin.Context) {
 	questions, err := models.GetQuestionsBySetID(uint64(setID))
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
-			"code":    500,
-			"msg": "获取问题失败",
-			"error":   err.Error(),
+			"code":  500,
+			"msg":   "获取问题失败",
+			"error": err.Error(),
 		})
 		return
 	}
 
 	c.JSON(http.StatusOK, gin.H{
-		"code":    200,
-		"msg": "成功",
-		"data":    questions,
+		"code": 200,
+		"msg":  "成功",
+		"data": questions,
 	})
 }
 
@@ -103,9 +103,9 @@ func SubmitEvaluationResult(c *gin.Context) {
 	var results []models.EvaluationResult
 	if err := c.ShouldBindJSON(&results); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
-			"code":    400,
-			"msg": "请求参数无效",
-			"error":   err.Error(),
+			"code":  400,
+			"msg":   "请求参数无效",
+			"error": err.Error(),
 		})
 		return
 	}
@@ -113,8 +113,8 @@ func SubmitEvaluationResult(c *gin.Context) {
 	// 验证结果数组不为空
 	if len(results) == 0 {
 		c.JSON(http.StatusBadRequest, gin.H{
-			"code":    400,
-			"msg": "评教结果数组不能为空",
+			"code": 400,
+			"msg":  "评教结果数组不能为空",
 		})
 		return
 	}
@@ -123,9 +123,9 @@ func SubmitEvaluationResult(c *gin.Context) {
 	for i := range results {
 		if results[i].Answer == "" {
 			c.JSON(http.StatusBadRequest, gin.H{
-				"code":    400,
-				"msg": "无效的结果值，答案不能为空",
-				"error":   "第" + strconv.Itoa(i+1) + "个评教结果的答案为空",
+				"code":  400,
+				"msg":   "无效的结果值，答案不能为空",
+				"error": "第" + strconv.Itoa(i+1) + "个评教结果的答案为空",
 			})
 			return
 		}
@@ -134,16 +134,16 @@ func SubmitEvaluationResult(c *gin.Context) {
 	// 使用批量保存方法
 	if err := models.BatchCreatesEvaluationResults(results); err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
-			"code":    500,
-			"msg": "提交评教结果失败",
-			"error":   err.Error(),
+			"code":  500,
+			"msg":   "提交评教结果失败",
+			"error": err.Error(),
 		})
 		return
 	}
 
 	c.JSON(http.StatusOK, gin.H{
-		"code":    200,
-		"msg": "评教结果提交成功",
+		"code": 200,
+		"msg":  "评教结果提交成功",
 		"data": gin.H{
 			"count": len(results),
 		},
@@ -156,9 +156,9 @@ func GetEnhancedEvaluationList(c *gin.Context) {
 	var req GetEnhancedEvaluationListPage
 	if err := c.ShouldBindJSON(&req); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
-			"code":    400,
-			"msg": "请求参数无效",
-			"error":   err.Error(),
+			"code":  400,
+			"msg":   "请求参数无效",
+			"error": err.Error(),
 		})
 		return
 	}
@@ -166,8 +166,8 @@ func GetEnhancedEvaluationList(c *gin.Context) {
 	customClaimsStr, exists := c.Get("customClaims")
 	if !exists {
 		c.JSON(http.StatusUnauthorized, gin.H{
-			"code":    401,
-			"msg": "未授权",
+			"code": 401,
+			"msg":  "未授权",
 		})
 		return
 	}
@@ -177,8 +177,8 @@ func GetEnhancedEvaluationList(c *gin.Context) {
 	if !ok {
 		log.Printf("customClaimsStr类型错误，实际类型: %T, 值: %v", customClaimsStr, customClaimsStr)
 		c.JSON(http.StatusInternalServerError, gin.H{
-			"code":    500,
-			"msg": "无效的身份验证信息格式",
+			"code": 500,
+			"msg":  "无效的身份验证信息格式",
 		})
 		return
 	}
@@ -196,8 +196,8 @@ func GetEnhancedEvaluationList(c *gin.Context) {
 	// Result值验证：-1表示不筛选，0表示未评(空或0)，1表示正确，2表示错误
 	if req.Result < -1 || req.Result > 1 {
 		c.JSON(http.StatusBadRequest, gin.H{
-			"code":    400,
-			"msg": "无效的结果筛选值，必须是-1(不筛选)、0(未评)、1(正确)或2(错误)",
+			"code": 400,
+			"msg":  "无效的结果筛选值，必须是-1(不筛选)、0(未评)、1(正确)或2(错误)",
 		})
 		return
 	}
@@ -224,7 +224,7 @@ func GetEnhancedEvaluationList(c *gin.Context) {
 			d.class_name,
 			d.course_name,
 			d.user_name,
-			d.createdAt,
+			d.created_at,
 			t.task_name,
 			t.academic_year,
 			t.semester,
@@ -246,9 +246,9 @@ func GetEnhancedEvaluationList(c *gin.Context) {
 			END as results 
 		FROM evaluation_task_details AS d
 		INNER JOIN evaluation_tasks t ON t.id = d.task_id AND CURRENT_TIMESTAMP BETWEEN t.start_time AND t.end_time
-		where d.class_id IN (?)
+		where d.is_deleted=false and d.class_id IN (?)
 		) as temp where 1=1 ` + whereClause + `
-		ORDER BY temp.createdAt desc 
+		ORDER BY temp.created_at desc 
 		LIMIT ? OFFSET ?
 	`
 
@@ -261,7 +261,7 @@ func GetEnhancedEvaluationList(c *gin.Context) {
 			d.class_name,
 			d.course_name,
 			d.user_name,
-			d.createdAt,
+			d.created_at,
 			t.task_name,
 			t.academic_year,
 			t.semester,
@@ -283,7 +283,7 @@ func GetEnhancedEvaluationList(c *gin.Context) {
 			END as results 
 		FROM evaluation_task_details AS d
 		INNER JOIN evaluation_tasks t ON t.id = d.task_id AND CURRENT_TIMESTAMP BETWEEN t.start_time AND t.end_time
-		where d.class_id IN (?)
+		where d.is_deleted=false and d.class_id IN (?)
 		) as temp where 1=1 ` + whereClause + `
 	`
 
@@ -302,9 +302,9 @@ func GetEnhancedEvaluationList(c *gin.Context) {
 	var total int64
 	if err := db.Raw(totalQuery, totalArgs...).Scan(&total).Error; err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
-			"code":    500,
-			"msg": "查询总数失败",
-			"error":   err.Error(),
+			"code":  500,
+			"msg":   "查询总数失败",
+			"error": err.Error(),
 		})
 		return
 	}
@@ -313,9 +313,9 @@ func GetEnhancedEvaluationList(c *gin.Context) {
 	rows, err := db.Raw(sqlQuery, queryArgs...).Rows()
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
-			"code":    500,
-			"msg": "查询评课列表失败",
-			"error":   err.Error(),
+			"code":  500,
+			"msg":   "查询评课列表失败",
+			"error": err.Error(),
 		})
 		return
 	}
@@ -346,9 +346,9 @@ func GetEnhancedEvaluationList(c *gin.Context) {
 		if err != nil {
 			log.Printf("扫描查询结果失败: %v", err)
 			c.JSON(http.StatusInternalServerError, gin.H{
-				"code":    500,
-				"msg": "处理查询结果失败",
-				"error":   err.Error(),
+				"code":  500,
+				"msg":   "处理查询结果失败",
+				"error": err.Error(),
 			})
 			return
 		}
@@ -367,9 +367,9 @@ func GetEnhancedEvaluationList(c *gin.Context) {
 	// 检查迭代过程中的错误
 	if err := rows.Err(); err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
-			"code":    500,
-			"msg": "迭代查询结果失败",
-			"error":   err.Error(),
+			"code":  500,
+			"msg":   "迭代查询结果失败",
+			"error": err.Error(),
 		})
 		return
 	}
@@ -382,8 +382,8 @@ func GetEnhancedEvaluationList(c *gin.Context) {
 
 	// 返回结果（包含分页信息）
 	c.JSON(http.StatusOK, gin.H{
-		"code":    200,
-		"msg": "获取评课列表成功",
+		"code": 200,
+		"msg":  "获取评课列表成功",
 		"data": gin.H{
 			"list":       evaluationList,
 			"total":      total,
@@ -400,8 +400,8 @@ func GetStatisticsResults(c *gin.Context) {
 	customClaimsStr, exists := c.Get("customClaims")
 	if !exists {
 		c.JSON(http.StatusUnauthorized, gin.H{
-			"code":    401,
-			"msg": "未授权",
+			"code": 401,
+			"msg":  "未授权",
 		})
 		return
 	}
@@ -411,8 +411,8 @@ func GetStatisticsResults(c *gin.Context) {
 	if !ok {
 		log.Printf("customClaimsStr类型错误，实际类型: %T, 值: %v", customClaimsStr, customClaimsStr)
 		c.JSON(http.StatusInternalServerError, gin.H{
-			"code":    500,
-			"msg": "无效的身份验证信息格式",
+			"code": 500,
+			"msg":  "无效的身份验证信息格式",
 		})
 		return
 	}
@@ -440,7 +440,7 @@ func GetStatisticsResults(c *gin.Context) {
 		FROM evaluation_task_details AS d
 		INNER JOIN evaluation_tasks t ON t.id = d.task_id
 			AND CURRENT_TIMESTAMP BETWEEN t.start_time AND t.end_time
-		WHERE d.class_id IN (?)
+		WHERE d.is_deleted=false and d.class_id IN (?)
 		) as TB
 	`
 
@@ -452,17 +452,17 @@ func GetStatisticsResults(c *gin.Context) {
 	var statRes StatisticsResults
 	if err := db.Raw(sqlQuery, queryArgs...).Scan(&statRes).Error; err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
-			"code":    500,
-			"msg": "查询统计结果失败",
-			"error":   err.Error(),
+			"code":  500,
+			"msg":   "查询统计结果失败",
+			"error": err.Error(),
 		})
 		return
 	}
 
 	// 返回结果
 	c.JSON(http.StatusOK, gin.H{
-		"code":    200,
-		"msg": "获取评教任务统计结果成功",
-		"data":    statRes,
+		"code": 200,
+		"msg":  "获取评教任务统计结果成功",
+		"data": statRes,
 	})
 }

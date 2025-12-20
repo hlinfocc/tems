@@ -62,6 +62,7 @@ func GetClassesByGrade(grade string) ([]Class, error) {
 	err := db.Model(&Class{}).Where("grade = ? AND is_deleted = ?", grade, false).Order("id ASC").Find(&classes).Error
 	return classes, err
 }
+
 // GetClassesByName 根据班级名称获取班级
 func GetClassesByName(className string) (Class, error) {
 	db := getDB()
@@ -106,6 +107,6 @@ func QueryClassesWithPagination(page, limit int, keyword string) ([]Class, int64
 func GetClassesTotal() (int64, error) {
 	db := getDB()
 	var count int64
-	err := db.Model(&Class{}).Where("is_deleted = ?",  false).Count(&count).Error
+	err := db.Model(&Class{}).Where("is_deleted = ?", false).Count(&count).Error
 	return count, err
 }

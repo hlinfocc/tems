@@ -7,7 +7,7 @@ type Student struct {
 	StudentID   string `gorm:"column:student_id;type:varchar(50);uniqueIndex;not null;comment:学号" json:"studentID"`
 	Phone       string `gorm:"column:phone;type:varchar(20);comment:手机号" json:"phone"`
 	ClassName   string `gorm:"column:class_name;type:varchar(100);comment:班级名称" json:"className"`
-	ClassID     uint64   `gorm:"column:class_id;type:bigint;not null;index;comment:班级ID" json:"classID"`
+	ClassID     uint64 `gorm:"column:class_id;type:bigint;not null;index;comment:班级ID" json:"classID"`
 	OpenID      string `gorm:"column:open_id;type:varchar(100);comment:微信OpenID" json:"openID"`
 	IsBound     bool   `gorm:"column:is_bound;type:boolean;default:false;comment:是否已绑定" json:"isBound"`
 	Password    string `gorm:"column:password;type:varchar(100);not null;comment:密码" json:"-"`
@@ -22,7 +22,7 @@ func (Student) TableName() string {
 type StudentQueryParams struct {
 	StudentName string `json:"studentName" form:"studentName"`
 	StudentID   string `json:"studentID" form:"studentID"`
-	ClassID     uint64   `json:"classID" form:"classID"`
+	ClassID     uint64 `json:"classID" form:"classID"`
 	Page        int    `json:"page" form:"page"`
 	PageSize    int    `json:"pageSize" form:"pageSize"`
 }

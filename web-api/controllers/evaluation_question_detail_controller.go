@@ -11,21 +11,21 @@ import (
 
 // EvaluationQuestionDetailRequest 评教问题详情请求参数
 type EvaluationQuestionDetailRequest struct {
-	Page         int    `form:"page" json:"page"`
-	Limit        int    `form:"limit" json:"limit"`
-	Keyword      string `form:"keyword" json:"keyword"`
+	Page          int    `form:"page" json:"page"`
+	Limit         int    `form:"limit" json:"limit"`
+	Keyword       string `form:"keyword" json:"keyword"`
 	QuestionSetID uint64 `form:"questionSetId" json:"questionSetId"`
-	QuestionType int    `form:"questionType" json:"questionType"`
+	QuestionType  int    `form:"questionType" json:"questionType"`
 }
 
 // EvaluationQuestionDetailForm 评教问题详情表单数据
 type EvaluationQuestionDetailForm struct {
-	ID           uint64 `json:"id" form:"id"`
+	ID            uint64 `json:"id" form:"id"`
 	QuestionSetID uint64 `json:"questionSetId" form:"questionSetId" binding:"required"`
-	Title        string `json:"title" form:"title" binding:"required"`
-	QuestionType int    `json:"questionType" form:"questionType" binding:"required"`
-	Options      string `json:"options" form:"options"`
-	Remark       string `json:"remark" form:"remark"`
+	Title         string `json:"title" form:"title" binding:"required"`
+	QuestionType  int    `json:"questionType" form:"questionType" binding:"required"`
+	Options       string `json:"options" form:"options"`
+	Remark        string `json:"remark" form:"remark"`
 }
 
 // GetEvaluationQuestionDetailList 获取评教问题详情列表

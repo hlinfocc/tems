@@ -11,6 +11,7 @@ import (
 	"strconv"
 	"strings"
 	"tems-web-api/assets"
+	"tems-web-api/config"
 	"tems-web-api/utils"
 	"time"
 
@@ -60,7 +61,7 @@ func checkFileType(file *multipart.FileHeader) bool {
 func generateFileName(originalName string) string {
 	// 使用时间戳+MD5生成唯一文件名
 	timestamp := time.Now().UnixNano()
-	newFileName := utils.Sha3(fmt.Sprintf("%d%s%s", timestamp, originalName, utils.RandStringBytes(10, false)))
+	newFileName := utils.Sha1(fmt.Sprintf("%d%s%s", timestamp, originalName, utils.RandStringBytes(10, false)))
 	return newFileName
 }
 
@@ -168,9 +169,6 @@ func UploadHandler() gin.HandlerFunc {
 		}
 		fmt.Println(filePath)
 		imgPreviewURL := os.Getenv("SERVER_IMG_PREVIEW_URL")
-		if imgPreviewURL == "" {
-			imgPreviewURL = "http://127.0.0.1:55555"
-		}
 
 		// 9. 返回成功响应
 		c.JSON(http.StatusOK, gin.H{
@@ -179,7 +177,7 @@ func UploadHandler() gin.HandlerFunc {
 			"orgName":  file.Filename,
 			"filename": filename,
 			"size":     file.Size,
-			"url":      fmt.Sprintf("%s%s", imgPreviewURL, strings.Replace(filePath, assets.ExecutePath+"\\", "/", 1)),
+			"url":      fmt.Sprintf("%s%s", imgPreviewURL, strings.Replace(filePath, assets.ExecutePath+config.Separator, "/", 1)),
 		})
 	}
 }
@@ -221,6 +219,8 @@ func MultiUploadHandler() gin.HandlerFunc {
 			return
 		}
 
+		imgPreviewURL := os.Getenv("SERVER_IMG_PREVIEW_URL")
+
 		for _, file := range files {
 			// 检查文件大小
 			if file.Size > maxFileSize {
@@ -251,7 +251,7 @@ func MultiUploadHandler() gin.HandlerFunc {
 				"orgName":  file.Filename,
 				"filename": filename,
 				"size":     file.Size,
-				"url":      strings.Replace(filePath, assets.ExecutePath, "/", 1),
+				"url":      fmt.Sprintf("%s%s", imgPreviewURL, strings.Replace(filePath, assets.ExecutePath+config.Separator, "/", 1)),
 			})
 		}
 

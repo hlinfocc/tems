@@ -1,0 +1,22 @@
+[Unit]
+Description=tems Web Application Container
+After=network.target postgresql.service
+
+[Service]
+Type=simple
+
+User=www
+Group=www
+
+PIDFile=/opt/tems/run/tems.pid
+ExecStart=/opt/tems/tems-web-api
+ExecReload=/bin/kill -s HUP $MAINPID
+ExecStop=/bin/kill -s QUIT $MAINPID
+
+PrivateTmp=true
+RestartSec=10
+Restart=always
+WorkingDirectory=/opt/tems
+
+[Install]
+WantedBy=multi-user.target

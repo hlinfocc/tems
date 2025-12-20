@@ -12,7 +12,7 @@ var (
 	//go:embed all:dist/*
 	content embed.FS
 
-	FileSystem http.FileSystem
+	FileSystem       http.FileSystem
 	UploadFileSystem http.FileSystem
 	UploadsBasePath  string
 	ExecutePath      string

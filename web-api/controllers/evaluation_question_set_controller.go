@@ -73,7 +73,7 @@ func GetEvaluationQuestionSetList(c *gin.Context) {
 
 	if req.IsPage == 0 {
 		// 获取分页数据
-		if err := query.Offset(offset).Limit(limit).Order("createdAt DESC").Find(&questionSets).Error; err != nil {
+		if err := query.Offset(offset).Limit(limit).Order("created_at DESC").Find(&questionSets).Error; err != nil {
 			c.JSON(http.StatusOK, gin.H{
 				"code": 500,
 				"msg":  "获取评教问题集列表失败: " + err.Error(),
@@ -85,7 +85,7 @@ func GetEvaluationQuestionSetList(c *gin.Context) {
 		if req.CurrYear > 0 {
 			query = query.Where("year = ?", time.Now().Year())
 		}
-		if err := query.Order("createdAt DESC").Find(&questionSets).Error; err != nil {
+		if err := query.Order("created_at DESC").Find(&questionSets).Error; err != nil {
 			c.JSON(http.StatusOK, gin.H{
 				"code": 500,
 				"msg":  "获取评教问题集列表失败: " + err.Error(),

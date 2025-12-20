@@ -1,6 +1,5 @@
 package models
 
-
 // AdminUser 管理员用户模型
 type AdminUser struct {
 	BaseModel
@@ -18,13 +17,13 @@ func (AdminUser) TableName() string {
 
 // AdminUserRequestParams 管理员用户请求参数
 type AdminUserRequestParams struct {
-	Page    *int   `form:"page" json:"page"`
-	Limit   *int   `form:"limit" json:"limit"`
-	IsPage  *int   `form:"isPage" json:"isPage"`
-	Status  *int   `form:"status" json:"status"`
+	Page     *int   `form:"page" json:"page"`
+	Limit    *int   `form:"limit" json:"limit"`
+	IsPage   *int   `form:"isPage" json:"isPage"`
+	Status   *int   `form:"status" json:"status"`
 	UserType *int   `form:"user_type" json:"user_type"`
-	Keyword string `form:"keyword" json:"keyword"`
-	Account string `form:"account" json:"account"`
+	Keyword  string `form:"keyword" json:"keyword"`
+	Account  string `form:"account" json:"account"`
 }
 
 // CreateAdminUser 创建管理员用户
@@ -88,7 +87,7 @@ func GetAllAdminUsers(params *AdminUserRequestParams) ([]AdminUser, int64, error
 			return nil, 0, err
 		}
 		return adminUsers, count, nil
-	}else{
+	} else {
 		if err := query.Find(&adminUsers).Error; err != nil {
 			return nil, 0, err
 		}

@@ -18,7 +18,7 @@ type CreateBannerRequest struct {
 
 // UpdateBannerRequest 更新轮播图请求
 type UpdateBannerRequest struct {
-	ID        uint64   `json:"id" binding:"required"`
+	ID        uint64 `json:"id" binding:"required"`
 	Title     string `json:"title" binding:"required"`
 	ImageURL  string `json:"image_url" binding:"required"`
 	IsVisible bool   `json:"is_visible"`
@@ -27,8 +27,8 @@ type UpdateBannerRequest struct {
 
 // UpdateBannerVisibilityRequest 更新轮播图可见性请求
 type UpdateBannerVisibilityRequest struct {
-	ID        uint64   `json:"id"`
-	IsVisible *bool `json:"is_visible" binding:"required"`
+	ID        uint64 `json:"id"`
+	IsVisible *bool  `json:"is_visible" binding:"required"`
 }
 
 // GetBanners 获取轮播图列表（前端展示用）
@@ -44,17 +44,17 @@ func GetBanners(c *gin.Context) {
 	banners, err := models.GetBanners(limit)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
-			"code":    500,
-			"msg": "获取轮播图失败",
-			"error":   err.Error(),
+			"code":  500,
+			"msg":   "获取轮播图失败",
+			"error": err.Error(),
 		})
 		return
 	}
 
 	c.JSON(http.StatusOK, gin.H{
-		"code":    200,
-		"msg": "成功",
-		"data":    banners,
+		"code": 200,
+		"msg":  "成功",
+		"data": banners,
 	})
 }
 
@@ -77,9 +77,9 @@ func GetAllBanners(c *gin.Context) {
 	banners, err := models.GetAllBanners()
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
-			"code":    500,
-			"msg": "获取轮播图失败",
-			"error":   err.Error(),
+			"code":  500,
+			"msg":   "获取轮播图失败",
+			"error": err.Error(),
 		})
 		return
 	}
@@ -100,8 +100,8 @@ func GetAllBanners(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, gin.H{
-		"code":    200,
-		"msg": "成功",
+		"code": 200,
+		"msg":  "成功",
 		"data": gin.H{
 			"list":      paginatedBanners,
 			"total":     total,
@@ -117,9 +117,9 @@ func CreateBanner(c *gin.Context) {
 	var req CreateBannerRequest
 	if err := c.ShouldBindJSON(&req); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
-			"code":    400,
-			"msg": "请求参数无效",
-			"error":   err.Error(),
+			"code":  400,
+			"msg":   "请求参数无效",
+			"error": err.Error(),
 		})
 		return
 	}
@@ -133,17 +133,17 @@ func CreateBanner(c *gin.Context) {
 
 	if err := models.CreateBanner(banner); err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
-			"code":    500,
-			"msg": "创建轮播图失败",
-			"error":   err.Error(),
+			"code":  500,
+			"msg":   "创建轮播图失败",
+			"error": err.Error(),
 		})
 		return
 	}
 
 	c.JSON(http.StatusOK, gin.H{
-		"code":    200,
-		"msg": "轮播图创建成功",
-		"data":    banner,
+		"code": 200,
+		"msg":  "轮播图创建成功",
+		"data": banner,
 	})
 }
 
@@ -152,9 +152,9 @@ func UpdateBanner(c *gin.Context) {
 	var req UpdateBannerRequest
 	if err1 := c.ShouldBindJSON(&req); err1 != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
-			"code":    400,
-			"msg": "请求参数无效",
-			"error":   err1.Error(),
+			"code":  400,
+			"msg":   "请求参数无效",
+			"error": err1.Error(),
 		})
 		return
 	}
@@ -162,8 +162,8 @@ func UpdateBanner(c *gin.Context) {
 	banner, err := models.GetBannerByID(req.ID)
 	if err != nil {
 		c.JSON(http.StatusNotFound, gin.H{
-			"code":    404,
-			"msg": "轮播图不存在",
+			"code": 404,
+			"msg":  "轮播图不存在",
 		})
 		return
 	}
@@ -175,17 +175,17 @@ func UpdateBanner(c *gin.Context) {
 
 	if err := models.UpdateBanner(banner); err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
-			"code":    500,
-			"msg": "更新轮播图失败",
-			"error":   err.Error(),
+			"code":  500,
+			"msg":   "更新轮播图失败",
+			"error": err.Error(),
 		})
 		return
 	}
 
 	c.JSON(http.StatusOK, gin.H{
-		"code":    200,
-		"msg": "轮播图更新成功",
-		"data":    banner,
+		"code": 200,
+		"msg":  "轮播图更新成功",
+		"data": banner,
 	})
 }
 
@@ -195,8 +195,8 @@ func DeleteBanner(c *gin.Context) {
 	id, err := strconv.ParseUint(idStr, 10, 64)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
-			"code":    400,
-			"msg": "Invalid banner ID",
+			"code": 400,
+			"msg":  "Invalid banner ID",
 		})
 		return
 	}
@@ -205,24 +205,24 @@ func DeleteBanner(c *gin.Context) {
 	_, err = models.GetBannerByID(id)
 	if err != nil {
 		c.JSON(http.StatusNotFound, gin.H{
-			"code":    404,
-			"msg": "Banner not found",
+			"code": 404,
+			"msg":  "Banner not found",
 		})
 		return
 	}
 
 	if err := models.DeleteBanner(id); err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
-			"code":    500,
-			"msg": "删除轮播图失败",
-			"error":   err.Error(),
+			"code":  500,
+			"msg":   "删除轮播图失败",
+			"error": err.Error(),
 		})
 		return
 	}
 
 	c.JSON(http.StatusOK, gin.H{
-		"code":    200,
-		"msg": "轮播图删除成功",
+		"code": 200,
+		"msg":  "轮播图删除成功",
 	})
 }
 
@@ -231,24 +231,24 @@ func UpdateBannerVisibility(c *gin.Context) {
 	var req UpdateBannerVisibilityRequest
 	if err := c.ShouldBindJSON(&req); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
-			"code":    400,
-			"msg": "请求参数无效",
-			"error":   err.Error(),
+			"code":  400,
+			"msg":   "请求参数无效",
+			"error": err.Error(),
 		})
 		return
 	}
 
 	if err := models.UpdateBannerVisibility(req.ID, *req.IsVisible); err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
-			"code":    500,
-			"msg": "更新轮播图可见性失败",
-			"error":   err.Error(),
+			"code":  500,
+			"msg":   "更新轮播图可见性失败",
+			"error": err.Error(),
 		})
 		return
 	}
 
 	c.JSON(http.StatusOK, gin.H{
-		"code":    200,
-		"msg": "轮播图可见性更新成功",
+		"code": 200,
+		"msg":  "轮播图可见性更新成功",
 	})
 }

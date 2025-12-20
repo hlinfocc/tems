@@ -9,7 +9,7 @@ type EvaluationResult struct {
 	QuestionDetailID uint64 `gorm:"column:question_detail_id;type:bigint;not null;index;comment:问题详情ID" json:"questionDetailId"`
 	StudentID        uint64 `gorm:"column:student_id;type:bigint;not null;index;comment:学生ID" json:"studentId"`
 	QuestionType     int    `gorm:"column:question_type;type:integer;not null;comment:问题类型: 单选、多选" json:"questionType"`
-	Semester         int `gorm:"column:semester;type:integer;not null;comment:学期" json:"semester"`
+	Semester         int    `gorm:"column:semester;type:integer;not null;comment:学期" json:"semester"`
 	AcademicYear     string `gorm:"column:academic_year;type:varchar(20);not null;comment:学年" json:"academicYear"`
 	Answer           string `gorm:"column:answer;type:text;comment:答案" json:"answer"`
 	Result           int    `gorm:"column:result;type:integer;default:0;comment:结果: 0未评 1正确 2错误" json:"result"`

@@ -48,10 +48,10 @@ func GetClassesByCourseID(courseID uint) ([]ClassCourse, error) {
 	return classCourses, err
 }
 
-func GetCourseByClassCourseID(classID uint64,courseID uint64) (bool, error) {
+func GetCourseByClassCourseID(classID uint64, courseID uint64) (bool, error) {
 	db := getDB()
 	var total int64
-	err := db.Model(&ClassCourse{}).Where("class_id = ? AND course_id = ? AND is_deleted = ?", classID,courseID, false).Count(&total).Error
+	err := db.Model(&ClassCourse{}).Where("class_id = ? AND course_id = ? AND is_deleted = ?", classID, courseID, false).Count(&total).Error
 	return total > 0, err
 }
 

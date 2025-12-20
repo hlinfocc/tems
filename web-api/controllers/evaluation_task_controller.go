@@ -35,9 +35,9 @@ func GetEvaluationTaskList(c *gin.Context) {
 	var req EvaluationTaskRequest
 	if err := c.ShouldBindQuery(&req); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
-			"code":    400,
-			"msg": "参数错误",
-			"error":   err.Error(),
+			"code":  400,
+			"msg":   "参数错误",
+			"error": err.Error(),
 		})
 		return
 	}
@@ -55,18 +55,18 @@ func GetEvaluationTaskList(c *gin.Context) {
 	if err != nil {
 		log.Printf("查询评教任务列表失败: %v", err)
 		c.JSON(http.StatusInternalServerError, gin.H{
-			"code":    500,
-			"msg": "获取评教任务列表失败",
-			"error":   err.Error(),
+			"code":  500,
+			"msg":   "获取评教任务列表失败",
+			"error": err.Error(),
 		})
 		return
 	}
 
 	c.JSON(http.StatusOK, gin.H{
-		"code":    200,
-		"msg": "成功",
-		"data":    tasks,
-		"count":   count,
+		"code":  200,
+		"msg":   "成功",
+		"data":  tasks,
+		"count": count,
 	})
 }
 
@@ -76,8 +76,8 @@ func GetEvaluationTaskDetail(c *gin.Context) {
 	id, err := strconv.ParseUint(idStr, 10, 64)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
-			"code":    400,
-			"msg": "无效的任务ID",
+			"code": 400,
+			"msg":  "无效的任务ID",
 		})
 		return
 	}
@@ -85,16 +85,16 @@ func GetEvaluationTaskDetail(c *gin.Context) {
 	task, err := models.GetEvaluationTaskByID(id)
 	if err != nil {
 		c.JSON(http.StatusNotFound, gin.H{
-			"code":    404,
-			"msg": "评教任务不存在",
+			"code": 404,
+			"msg":  "评教任务不存在",
 		})
 		return
 	}
 
 	c.JSON(http.StatusOK, gin.H{
-		"code":    200,
-		"msg": "成功",
-		"data":    task,
+		"code": 200,
+		"msg":  "成功",
+		"data": task,
 	})
 }
 
@@ -103,9 +103,9 @@ func CreateEvaluationTask(c *gin.Context) {
 	var form EvaluationTaskForm
 	if err := c.ShouldBindJSON(&form); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
-			"code":    400,
-			"msg": "参数错误",
-			"error":   err.Error(),
+			"code":  400,
+			"msg":   "参数错误",
+			"error": err.Error(),
 		})
 		return
 	}
@@ -124,16 +124,16 @@ func CreateEvaluationTask(c *gin.Context) {
 	if err := models.CreateEvaluationTask(task); err != nil {
 		log.Printf("创建评教任务失败: %v", err)
 		c.JSON(http.StatusInternalServerError, gin.H{
-			"code":    500,
-			"msg": "创建评教任务失败",
-			"error":   err.Error(),
+			"code":  500,
+			"msg":   "创建评教任务失败",
+			"error": err.Error(),
 		})
 		return
 	}
 
 	c.JSON(http.StatusOK, gin.H{
-		"code":    200,
-		"msg": "创建评教任务成功",
+		"code": 200,
+		"msg":  "创建评教任务成功",
 	})
 }
 
@@ -142,9 +142,9 @@ func UpdateEvaluationTask(c *gin.Context) {
 	var form EvaluationTaskForm
 	if err := c.ShouldBindJSON(&form); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
-			"code":    400,
-			"msg": "参数错误",
-			"error":   err.Error(),
+			"code":  400,
+			"msg":   "参数错误",
+			"error": err.Error(),
 		})
 		return
 	}
@@ -166,16 +166,16 @@ func UpdateEvaluationTask(c *gin.Context) {
 	if err := models.UpdateEvaluationTask(task); err != nil {
 		log.Printf("更新评教任务失败: %v", err)
 		c.JSON(http.StatusInternalServerError, gin.H{
-			"code":    500,
-			"msg": "更新评教任务失败",
-			"error":   err.Error(),
+			"code":  500,
+			"msg":   "更新评教任务失败",
+			"error": err.Error(),
 		})
 		return
 	}
 
 	c.JSON(http.StatusOK, gin.H{
-		"code":    200,
-		"msg": "更新评教任务成功",
+		"code": 200,
+		"msg":  "更新评教任务成功",
 	})
 }
 
@@ -185,8 +185,8 @@ func DeleteEvaluationTask(c *gin.Context) {
 	id, err := strconv.ParseUint(idStr, 10, 64)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
-			"code":    400,
-			"msg": "无效的任务ID",
+			"code": 400,
+			"msg":  "无效的任务ID",
 		})
 		return
 	}
@@ -200,16 +200,16 @@ func DeleteEvaluationTask(c *gin.Context) {
 	if err := models.DeleteEvaluationTask(id); err != nil {
 		log.Printf("删除评教任务失败: %v", err)
 		c.JSON(http.StatusInternalServerError, gin.H{
-			"code":    500,
-			"msg": "删除评教任务失败",
-			"error":   err.Error(),
+			"code":  500,
+			"msg":   "删除评教任务失败",
+			"error": err.Error(),
 		})
 		return
 	}
 
 	c.JSON(http.StatusOK, gin.H{
-		"code":    200,
-		"msg": "删除评教任务成功",
+		"code": 200,
+		"msg":  "删除评教任务成功",
 	})
 }
 
@@ -219,9 +219,9 @@ func GetAllEvaluationTasks(c *gin.Context) {
 	if err != nil {
 		log.Printf("获取所有评教任务失败: %v", err)
 		c.JSON(http.StatusInternalServerError, gin.H{
-			"code":    500,
-			"msg": "获取评教任务列表失败",
-			"error":   err.Error(),
+			"code":  500,
+			"msg":   "获取评教任务列表失败",
+			"error": err.Error(),
 		})
 		return
 	}
@@ -236,9 +236,9 @@ func GetAllEvaluationTasks(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, gin.H{
-		"code":    200,
-		"msg": "成功",
-		"data":    options,
+		"code": 200,
+		"msg":  "成功",
+		"data": options,
 	})
 }
 
@@ -248,16 +248,16 @@ func GetActiveEvaluationTasks(c *gin.Context) {
 	if err != nil {
 		log.Printf("获取有效评教任务失败: %v", err)
 		c.JSON(http.StatusInternalServerError, gin.H{
-			"code":    500,
-			"msg": "获取有效评教任务失败",
-			"error":   err.Error(),
+			"code":  500,
+			"msg":   "获取有效评教任务失败",
+			"error": err.Error(),
 		})
 		return
 	}
 
 	c.JSON(http.StatusOK, gin.H{
-		"code":    200,
-		"msg": "成功",
-		"data":    tasks,
+		"code": 200,
+		"msg":  "成功",
+		"data": tasks,
 	})
 }

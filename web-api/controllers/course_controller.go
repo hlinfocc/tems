@@ -28,9 +28,9 @@ func GetCourseList(c *gin.Context) {
 	var req CourseRequest
 	if err := c.ShouldBindQuery(&req); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
-			"code":    400,
-			"msg": "参数错误",
-			"error":   err.Error(),
+			"code":  400,
+			"msg":   "参数错误",
+			"error": err.Error(),
 		})
 		return
 	}
@@ -53,18 +53,18 @@ func GetCourseList(c *gin.Context) {
 	if err != nil {
 		log.Printf("分页查询课程列表失败: %v", err)
 		c.JSON(http.StatusInternalServerError, gin.H{
-			"code":    500,
-			"msg": "获取课程列表失败",
-			"error":   err.Error(),
+			"code":  500,
+			"msg":   "获取课程列表失败",
+			"error": err.Error(),
 		})
 		return
 	}
 
 	c.JSON(http.StatusOK, gin.H{
-		"code":    200,
-		"msg": "成功",
-		"data":    courses,
-		"count":   count,
+		"code":  200,
+		"msg":   "成功",
+		"data":  courses,
+		"count": count,
 	})
 }
 
@@ -74,8 +74,8 @@ func GetCourseByID(c *gin.Context) {
 	id, err := strconv.ParseUint(idStr, 10, 64)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
-			"code":    400,
-			"msg": "无效的课程ID",
+			"code": 400,
+			"msg":  "无效的课程ID",
 		})
 		return
 	}
@@ -83,16 +83,16 @@ func GetCourseByID(c *gin.Context) {
 	course, err := models.GetCourseByID(id)
 	if err != nil {
 		c.JSON(http.StatusNotFound, gin.H{
-			"code":    404,
-			"msg": "课程不存在",
+			"code": 404,
+			"msg":  "课程不存在",
 		})
 		return
 	}
 
 	c.JSON(http.StatusOK, gin.H{
-		"code":    200,
-		"msg": "成功",
-		"data":    course,
+		"code": 200,
+		"msg":  "成功",
+		"data": course,
 	})
 }
 
@@ -101,9 +101,9 @@ func CreateCourse(c *gin.Context) {
 	var form CourseForm
 	if err := c.ShouldBindJSON(&form); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
-			"code":    400,
-			"msg": "参数错误",
-			"error":   err.Error(),
+			"code":  400,
+			"msg":   "参数错误",
+			"error": err.Error(),
 		})
 		return
 	}
@@ -116,17 +116,17 @@ func CreateCourse(c *gin.Context) {
 	if err := models.CreateCourse(course); err != nil {
 		log.Printf("创建课程失败: %v", err)
 		c.JSON(http.StatusInternalServerError, gin.H{
-			"code":    500,
-			"msg": "创建课程失败",
-			"error":   err.Error(),
+			"code":  500,
+			"msg":   "创建课程失败",
+			"error": err.Error(),
 		})
 		return
 	}
 
 	c.JSON(http.StatusOK, gin.H{
-		"code":    200,
-		"msg": "创建成功",
-		"data":    course,
+		"code": 200,
+		"msg":  "创建成功",
+		"data": course,
 	})
 }
 
@@ -135,9 +135,9 @@ func UpdateCourse(c *gin.Context) {
 	var form CourseForm
 	if err := c.ShouldBindJSON(&form); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
-			"code":    400,
-			"msg": "参数错误",
-			"error":   err.Error(),
+			"code":  400,
+			"msg":   "参数错误",
+			"error": err.Error(),
 		})
 		return
 	}
@@ -146,8 +146,8 @@ func UpdateCourse(c *gin.Context) {
 	course, err := models.GetCourseByID(form.ID)
 	if err != nil {
 		c.JSON(http.StatusNotFound, gin.H{
-			"code":    404,
-			"msg": "课程不存在",
+			"code": 404,
+			"msg":  "课程不存在",
 		})
 		return
 	}
@@ -159,17 +159,17 @@ func UpdateCourse(c *gin.Context) {
 	if err := models.UpdateCourse(course); err != nil {
 		log.Printf("更新课程失败: %v", err)
 		c.JSON(http.StatusInternalServerError, gin.H{
-			"code":    500,
-			"msg": "更新课程失败",
-			"error":   err.Error(),
+			"code":  500,
+			"msg":   "更新课程失败",
+			"error": err.Error(),
 		})
 		return
 	}
 
 	c.JSON(http.StatusOK, gin.H{
-		"code":    200,
-		"msg": "更新成功",
-		"data":    course,
+		"code": 200,
+		"msg":  "更新成功",
+		"data": course,
 	})
 }
 
@@ -179,8 +179,8 @@ func DeleteCourse(c *gin.Context) {
 	id, err := strconv.ParseUint(idStr, 10, 64)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
-			"code":    400,
-			"msg": "无效的课程ID",
+			"code": 400,
+			"msg":  "无效的课程ID",
 		})
 		return
 	}
@@ -189,8 +189,8 @@ func DeleteCourse(c *gin.Context) {
 	_, err = models.GetCourseByID(id)
 	if err != nil {
 		c.JSON(http.StatusNotFound, gin.H{
-			"code":    404,
-			"msg": "课程不存在",
+			"code": 404,
+			"msg":  "课程不存在",
 		})
 		return
 	}
@@ -199,15 +199,15 @@ func DeleteCourse(c *gin.Context) {
 	if err := models.DeleteCourse(id); err != nil {
 		log.Printf("删除课程失败: %v", err)
 		c.JSON(http.StatusInternalServerError, gin.H{
-			"code":    500,
-			"msg": "删除课程失败",
-			"error":   err.Error(),
+			"code":  500,
+			"msg":   "删除课程失败",
+			"error": err.Error(),
 		})
 		return
 	}
 
 	c.JSON(http.StatusOK, gin.H{
-		"code":    200,
-		"msg": "删除成功",
+		"code": 200,
+		"msg":  "删除成功",
 	})
 }

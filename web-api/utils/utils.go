@@ -1,6 +1,7 @@
 package utils
 
 import (
+	"crypto/sha1"
 	"crypto/sha512"
 	"encoding/hex"
 	"fmt"
@@ -75,6 +76,13 @@ func HasPrefixIgnoreCase(s, prefix string) bool {
 
 func Sha3(data string) string {
 	h := sha512.New()
+	h.Write([]byte(data))
+	hash := h.Sum(nil)
+	return hex.EncodeToString(hash)
+}
+
+func Sha1(data string) string {
+	h := sha1.New()
 	h.Write([]byte(data))
 	hash := h.Sum(nil)
 	return hex.EncodeToString(hash)
