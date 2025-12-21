@@ -4,7 +4,7 @@ App({
     userInfo: null,
     studentInfo: null,
     isLoggedIn: false,
-    baseUrl: 'http://localhost:55555/api'
+    baseUrl: 'https://pj.gychinazx.com/api'
   },
 
   onLaunch() {

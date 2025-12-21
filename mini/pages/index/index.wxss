@@ -185,7 +185,7 @@
 }
 
 .deadline {
-  font-size: 13px;
+  font-size: 12px;
   color: var(--text-tertiary);
   display: flex;
   align-items: center;
@@ -199,7 +199,7 @@
 }
 
 .status {
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 500;
   color: var(--primary-color);
   padding: 4px 8px;

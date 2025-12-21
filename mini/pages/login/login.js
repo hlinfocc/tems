@@ -64,7 +64,7 @@ Page({
       success: (res) => {
         console.log('登录接口返回:', res);
         
-        if (res.statusCode === 200 && res.data) {
+        if (res.statusCode === 200 && res.data.code === 200) {
           if (res.data.need_bind) {
             // 需要绑定学生信息，跳转到绑定页面
             this.setData({ loading: false });
@@ -85,7 +85,7 @@ Page({
             this.loginSuccess(studentInfo);
           }
         } else {
-          this.handleLoginError(res.data?.message || '登录失败');
+          this.handleLoginError(res.data?.msg || '登录失败');
         }
       },
       fail: (err) => {

@@ -223,18 +223,22 @@ Page({
       data: this.data.answers,
       success: (res) => {
         wx.hideLoading();
-        if (res.statusCode === 200 && res.data.data.code === 200) {
+        console.log("tijiao->",res)
+        if (res.statusCode === 200 && res.data.code === 200) {
           wx.hideLoading();
-          wx.showToast({
-            title: "提交成功",
-            icon: "success",
-          });
-          setTimeout(() => {
-            wx.navigateBack();
-          }, 1500);
+          wx.showModal({
+            title: '提示',
+            content: res.data.data.msg || "提交成功",
+            showCancel:false,
+            success (smrs) {
+              if (smrs.confirm) {
+                wx.navigateBack();
+              }
+            }
+          })
         } else {
           wx.showToast({
-            title: res.data.data.message || "提交失败，请重试",
+            title: res.data.data.msg || "提交失败，请重试",
             icon: "none",
           });
         }
