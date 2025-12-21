@@ -164,6 +164,7 @@ func SetupRoutes(r *gin.Engine) {
 			courseGroup.GET("/list", controllers.GetCourseList)
 			courseGroup.GET("/detail/:id", controllers.GetCourseByID)
 			courseGroup.POST("/add", controllers.CreateCourse)
+			courseGroup.POST("/batchAdd", controllers.CreateBatchCourse)
 			courseGroup.POST("/update", controllers.UpdateCourse)
 			courseGroup.POST("/delete/:id", controllers.DeleteCourse)
 		}

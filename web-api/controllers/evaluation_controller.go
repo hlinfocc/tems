@@ -424,7 +424,7 @@ func GetStatisticsResults(c *gin.Context) {
 	sqlQuery := `
 		select
 			COUNT(*) as total,
-			COUNT(*) FILTER (WHERE results = eqds) as complete,
+			COUNT(*) FILTER (WHERE results >= eqds) as complete,
 			COUNT(*) FILTER (WHERE results < eqds) as incomplete
 		from (
 		SELECT d.id,d.course_name,t.question_set_id,

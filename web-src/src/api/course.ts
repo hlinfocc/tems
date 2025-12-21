@@ -69,6 +69,13 @@ export const addCourse = (data: CourseForm) => {
   }>({ url: '/manager/api/courses/add', data }, { isTransformResponse: false });
 };
 
+export const batchAddCourse = (data: CourseForm[]) => {
+  return request.post<{
+    code: number;
+    msg: string;
+  }>({ url: '/manager/api/courses/batchAdd', data }, { isTransformResponse: false });
+};
+
 /**
  * 更新课程
  * @param data 课程信息

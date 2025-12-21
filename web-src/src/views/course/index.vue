@@ -74,6 +74,13 @@
                       >
                         添加
                       </tiny-button>
+                      <tiny-button
+                        type="info"
+                        class="batch-btn"
+                        @click="() => (barchAddVisible = true)"
+                      >
+                        批量添加
+                      </tiny-button>
                       <div class="screen">
                         <img
                           v-if="!fullscreen"
@@ -133,6 +140,7 @@
       :course-data="selectedCourse"
       @success="addCallback"
     />
+    <batch-add  v-model:visible="barchAddVisible" @success="addCallback" />
   </div>
 </template>
 
@@ -159,8 +167,10 @@
   import type { CourseInfo, QueryParmas } from '@/api/course';
   import Breadcrumb from '@/components/breadcrumb/index.vue';
   import CourseEditor from './components/editor.vue';
+  import batchAdd from './components/batchAdd.vue';
 
   const editorVisible = ref(false);
+  const barchAddVisible = ref(false);
   const selectedCourse = ref<any>({});
 
   // 初始化请求数据
@@ -319,4 +329,17 @@
 
 <style scoped lang="less">
   @import '@/assets/style/page-table.less';
+  .btn {
+    display: flex;
+    justify-content: start;
+    width: 100%;
+    position: relative;
+  }
+  .batch-btn {
+    width: 110px !important;
+  }
+  .screen {
+    position: absolute;
+    right: 7px;
+  }
 </style>

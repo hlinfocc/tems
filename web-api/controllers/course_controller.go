@@ -130,6 +130,42 @@ func CreateCourse(c *gin.Context) {
 	})
 }
 
+func CreateBatchCourse(c *gin.Context) {
+	var form []CourseForm
+	if err := c.ShouldBindJSON(&form); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"code":  400,
+			"msg":   "参数错误",
+			"error": err.Error(),
+		})
+		return
+	}
+	var courses []*models.Course
+	for _, item := range form {
+		course := &models.Course{
+			CourseName: item.CourseName,
+			Status:     item.Status,
+		}
+		courses = append(courses, course)
+	}
+
+	if err := models.CreateBatchCourse(courses); err != nil {
+		log.Printf("创建课程失败: %v", err)
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"code":  500,
+			"msg":   "创建课程失败",
+			"error": err.Error(),
+		})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"code": 200,
+		"msg":  "创建成功",
+		"data": nil,
+	})
+}
+
 // UpdateCourse 更新课程信息
 func UpdateCourse(c *gin.Context) {
 	var form CourseForm

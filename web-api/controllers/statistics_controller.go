@@ -89,8 +89,7 @@ func GetEvaluationDetailStatistics(c *gin.Context) {
 		left join evaluation_results er on er.question_detail_id =eqd.id and er.answer = opt->>'key' 
 		and er.task_id=d.task_id and er.task_detail_id=d.id and er.question_set_id=t.question_set_id 
 		WHERE 1=1 ` + whereClause + `
-		group by t.task_name,t.academic_year,t.semester,t.question_set_name,d.class_name,d.course_name,d.user_name,d.course_id,eqd.id,eqd.title,eqd.question_type,opt->>'key',opt->>'value',er.answer 
-		)
+		group by t.task_name,t.academic_year,t.semester,t.question_set_name,d.class_name,d.course_name,d.user_name,d.course_id,eqd.id,eqd.title,eqd.question_type,opt->>'key',opt->>'value',er.answer) as TB
 	`
 	// 执行查询
 	db := models.GetDB()

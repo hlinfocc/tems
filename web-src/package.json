@@ -31,6 +31,7 @@
     "@opentiny/fluent-editor": "^4.0.0-alpha.8",
     "@opentiny/hwc-client": "^0.0.14",
     "@opentiny/vue": "^3.11.1",
+    "@opentiny/vue-icon": "^3.27.0",
     "@opentiny/vue-locale": "^3.24.0",
     "@opentiny/vue-theme": "^3.24.0",
     "@types/mockjs": "^1.0.9",

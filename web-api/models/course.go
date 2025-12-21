@@ -18,6 +18,12 @@ func CreateCourse(course *Course) error {
 	return db.Create(course).Error
 }
 
+// CreateBatchCourse 创建批量课程
+func CreateBatchCourse(courses []*Course) error {
+	db := getDB()
+	return db.CreateInBatches(courses, len(courses)).Error
+}
+
 // GetCourseByID 根据ID获取课程
 func GetCourseByID(id uint64) (*Course, error) {
 	db := getDB()

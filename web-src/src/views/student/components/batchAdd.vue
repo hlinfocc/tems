@@ -140,7 +140,7 @@
           }
           // 解析学生信息
           const studentInfos = submitData.studentInfos
-            .split('\n')
+            .split(/\r?\n/)
             .map((line) => {
               const [name, id, className] = line.split(/[，,]/);
               return {
