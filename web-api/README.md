@@ -42,6 +42,8 @@ SERVER_HOST=0.0.0.0
 SERVER_PORT=55555
 # 图片预览服务URL前缀
 SERVER_IMG_PREVIEW_URL=http://127.0.0.1:55555
+# 小程序是否开放注册(默认为true)
+OPEN_REGISTER=true
 
 # 小程序配置
 # 小程序AppID

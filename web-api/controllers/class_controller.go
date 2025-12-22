@@ -74,6 +74,38 @@ func GetClassList(c *gin.Context) {
 	})
 }
 
+// GetClassList 根据班级名称获取班级列表（不分页）
+func GetClassListByName(c *gin.Context) {
+	var req ClassRequest
+	if err := c.ShouldBindQuery(&req); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"code":  400,
+			"msg":   "参数错误",
+			"error": err.Error(),
+		})
+		return
+	}
+
+	classes, err := models.GetClassesListByName(req.Keyword, true)
+
+	if err != nil {
+		log.Printf("查询班级列表失败: %v", err)
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"code":  500,
+			"msg":   "获取班级列表失败",
+			"error": "",
+		})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"code":  200,
+		"msg":   "成功",
+		"data":  classes,
+		"count": len(classes),
+	})
+}
+
 // GetClassByID 获取单个班级信息
 func GetClassByID(c *gin.Context) {
 	idStr := c.Param("id")

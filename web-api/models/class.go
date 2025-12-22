@@ -72,6 +72,20 @@ func GetClassesByName(className string) (Class, error) {
 	return classes, err
 }
 
+// GetClassesListByName 根据班级名称查询班级信息
+func GetClassesListByName(className string, simple bool) ([]Class, error) {
+	db := getDB()
+	var classes []Class
+	className = "%" + strings.TrimSpace(className) + "%"
+	var err error
+	if simple {
+		err = db.Model(&Class{}).Select("id", "class_name", "grade", "major_name", "major_id").Where("class_name like ? AND is_deleted = ?", className, false).First(&classes).Error
+	} else {
+		err = db.Model(&Class{}).Where("class_name like ? AND is_deleted = ?", className, false).First(&classes).Error
+	}
+	return classes, err
+}
+
 // QueryClassesWithPagination 分页查询班级列表
 func QueryClassesWithPagination(page, limit int, keyword string) ([]Class, int64, error) {
 	db := getDB()

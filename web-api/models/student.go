@@ -135,6 +135,17 @@ func GetStudentByNameIdClass(studentName, studentID, className string) (*Student
 	return &student, nil
 }
 
+func GetCountStudentByNameIdClassId(studentName string, studentID string, classID uint64) int64 {
+	db := getDB()
+	var qty int64
+	err := db.Where("student_name = ? AND student_id = ? and class_id=? AND is_deleted = ?",
+		studentName, studentID, classID, false).Count(&qty).Error
+	if err != nil {
+		return -1
+	}
+	return qty
+}
+
 // GetStudentsWithPagination 分页获取学生列表（支持姓名、学号模糊查询，班级ID查询）
 func GetStudentsWithPagination(params StudentQueryParams) ([]Student, int64, error) {
 	db := getDB()

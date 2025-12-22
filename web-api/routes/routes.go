@@ -64,6 +64,11 @@ func SetupRoutes(r *gin.Engine) {
 			evaluationRoutes.POST("/submitResults", controllers.SubmitEvaluationResult)
 			evaluationRoutes.GET("/statistics", controllers.GetStatisticsResults)
 		}
+		classGroup := v1.Group("/classes")
+		{
+			classGroup.GET("/list", controllers.GetClassListByName)
+		}
+
 	}
 
 	// 管理后台接口分组

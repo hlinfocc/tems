@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
 	"strconv"
 	"strings"
 	"sync"
@@ -27,7 +28,8 @@ type StudentLoginRequest struct {
 type StudentBindRequest struct {
 	StudentName string `json:"studentName" binding:"required"`
 	StudentID   string `json:"studentId" binding:"required"`
-	ClassName   string `json:"className" binding:"required"`
+	ClassName   string `json:"className"`
+	ClassID     uint64 `json:"classId"`
 	Phone       string `json:"phone" binding:"required"` // 获取手机号的code
 	OpenID      string `json:"openId" binding:"required"`
 }
@@ -53,6 +55,14 @@ type WechatPhoneResponse struct {
 		PurePhoneNumber string `json:"purePhoneNumber"`
 		CountryCode     string `json:"countryCode"`
 	} `json:"phone_info"`
+}
+
+var openRegister bool = true
+
+func initEnvParams() {
+	if val := os.Getenv("OPEN_REGISTER"); val != "" {
+		openRegister, _ = strconv.ParseBool(val)
+	}
 }
 
 // 获取微信access_token
@@ -258,33 +268,95 @@ func BindStudent(c *gin.Context) {
 		})
 		return
 	}
+	initEnvParams()
+	var student models.Student
+	if openRegister {
+		student = models.Student{
+			StudentName: req.StudentName,
+			StudentID:   req.StudentID,
+			Phone:       req.Phone,
+			ClassName:   req.ClassName,
+			ClassID:     req.ClassID,
+			OpenID:      req.OpenID,
+			IsBound:     true,
+		}
+		if req.ClassID <= 0 && req.ClassName == "" {
+			c.JSON(http.StatusNotFound, gin.H{
+				"code":  404,
+				"msg":   "请输入正确的班级",
+				"error": "",
+			})
+			return
+		}
+		if req.ClassID > 0 {
+			classes, ce := models.GetClassByID(req.ClassID)
+			if ce != nil {
+				c.JSON(http.StatusNotFound, gin.H{
+					"code":  404,
+					"msg":   "班级信息不存在",
+					"error": "",
+				})
+				return
+			}
+			student.ClassName = classes.ClassName
+		}
+		if req.ClassID <= 0 && req.ClassName != "" {
+			classList, cle := models.GetClassesListByName(req.ClassName, false)
+			if cle != nil && len(classList) != 1 {
+				c.JSON(http.StatusNotFound, gin.H{
+					"code":  404,
+					"msg":   "请输入正确的班级名称",
+					"error": "",
+				})
+				return
+			}
+			student.ClassID = classList[0].ID
+		}
 
-	// 根据姓名、学号、班级匹配学生
-	student, err := models.GetStudentByNameIdClass(req.StudentName, req.StudentID, req.ClassName)
+		qty := models.GetCountStudentByNameIdClassId(req.StudentName, req.StudentID, req.ClassID)
+		if qty > 0 {
+			c.JSON(http.StatusNotFound, gin.H{
+				"code":  404,
+				"msg":   "该学生姓名及学号已存在",
+				"error": "请检查姓名、学号和班级信息是否正确",
+			})
+			return
+		}
+		if uerr := models.CreateStudent(&student); uerr != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{
+				"code":  500,
+				"msg":   "保存信息失败，请重试",
+				"error": "",
+			})
+			return
+		}
+	} else {
+		// 根据姓名、学号、班级匹配学生
+		student, err := models.GetStudentByNameIdClass(req.StudentName, req.StudentID, req.ClassName)
 
-	if err != nil {
-		c.JSON(http.StatusNotFound, gin.H{
-			"code":  404,
-			"msg":   "学生信息不匹配",
-			"error": "请检查姓名、学号和班级信息是否正确",
-		})
-		return
-	}
+		if err != nil {
+			c.JSON(http.StatusNotFound, gin.H{
+				"code":  404,
+				"msg":   "学生信息不匹配",
+				"error": "请检查姓名、学号和班级信息是否正确",
+			})
+			return
+		}
+		// 更新绑定信息
+		student.OpenID = req.OpenID
+		student.IsBound = true
+		student.Phone = req.Phone
+		student.UpdatedAt = models.Now()
 
-	// 更新绑定信息
-	student.OpenID = req.OpenID
-	student.IsBound = true
-	student.Phone = req.Phone
-	student.UpdatedAt = models.Now()
-
-	// 保存更新
-	if uerr := models.UpdateStudent(student); uerr != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{
-			"code":  500,
-			"msg":   "更新学生信息失败",
-			"error": uerr.Error(),
-		})
-		return
+		// 保存更新
+		if uerr := models.UpdateStudent(student); uerr != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{
+				"code":  500,
+				"msg":   "更新学生信息失败",
+				"error": uerr.Error(),
+			})
+			return
+		}
 	}
 
 	// 生成JWT token

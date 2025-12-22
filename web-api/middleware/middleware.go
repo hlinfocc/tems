@@ -14,7 +14,16 @@ func JWTAuthMiddleware(appType int) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		// 排除登录接口和信息绑定接口，不进行JWT认证
 		path := c.Request.URL.Path
-		if path == "/api/v1/banners" || path == "/api/v1/students/login" || path == "/api/v1/students/bind" || path == "/manager/api/login" {
+		// 定义白名单路径集合
+		skipPaths := map[string]bool{
+			"/api/v1/banners":        true,
+			"/api/v1/classes/list":   true,
+			"/api/v1/students/login": true,
+			"/api/v1/students/bind":  true,
+			"/manager/api/login":     true,
+		}
+
+		if skipPaths[path] {
 			c.Next()
 			return
 		}
