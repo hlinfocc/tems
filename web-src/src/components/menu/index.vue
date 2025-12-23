@@ -33,6 +33,7 @@ import { useTabStore } from "@/store";
 import { ITreeNodeData } from "@/router/guard/index";
 // import { useDeepClone } from "@/hooks/useDeepClone";
 
+
 // import { useMenuStore } from "@/store/modules/router";
 // const menuStore = useMenuStore();
 // await menuStore.getMenuList();
@@ -41,6 +42,8 @@ import { ITreeNodeData } from "@/router/guard/index";
 type SideMenuData = (ITreeNodeData & { meta: { url: string } })[];
 
 let routerTitle = [] as any;
+
+const currRole = ref('');
 
 const tree = ref();
 const expandeArr = ref<(string | number)[]>([]);
@@ -73,6 +76,11 @@ const filtter = (treeNodeDatas: ITreeNodeData[]) => {
   const menus: SideMenuData = [];
   for (let i = 0; i < treeNodeDatas.length; i += 1) {
     const treeNodeData = treeNodeDatas[i];
+    // 判断角色
+    // console.log("判断角色:",treeNodeData.meta.roles.includes(currRole),currRole.value);
+    if (!treeNodeData.meta.roles.includes(currRole.value)){
+      continue;
+    }
     let url = "";
     if (treeNodeData.url) {
       url = treeNodeData.url ? treeNodeData.url! : "";
@@ -155,7 +163,7 @@ onMounted(() => {
       const key = findId(tabStore.current.name, tabStore.current.link);
       tree.value.setCurrentKey(key);
 
-      let parentId = null;
+      let parentId:any = null;
       parentId =
         routerUse.currentRoute.value.matched.length >= 2
           ? routerUse.currentRoute.value.matched[1].name
@@ -166,6 +174,7 @@ onMounted(() => {
     },
     { deep: true, immediate: true }
   );
+  currRole.value = localStorage.getItem("USER_ROLE_STORE_STATE") || ""
 });
 </script>
 

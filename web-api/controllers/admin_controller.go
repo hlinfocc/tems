@@ -220,6 +220,10 @@ func AdminLogin(c *gin.Context) {
 	if user.UserType == 0 {
 		currRole = "admin"
 	}
+	// 判断是否是班主任
+	if models.HasClassesAdvisor(user.ID) {
+		currRole = "classAdvisor"
+	}
 	// 生成JWT token
 	token, err := utils.GenJwtToken(
 		user.ID,       // 管理员ID
@@ -352,7 +356,9 @@ func CreateAdminUser(c *gin.Context) {
 		})
 		return
 	}
-
+	if req.UserType == 1 {
+		req.Password = utils.RandStringPlusBytes(20)
+	}
 	adminUser := &models.AdminUser{
 		Name:     req.Name,
 		Username: req.Username,

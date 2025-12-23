@@ -89,5 +89,6 @@ module.exports = {
     // 如果使用 TypeScript，可能还需要关闭这个规则 [citation:9]
     '@typescript-eslint/camelcase': 'off',
     'no-plusplus': 'off',
+    'no-continue': 'off',  // 完全关闭
   },
 };

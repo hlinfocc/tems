@@ -11,7 +11,7 @@ export default {
     locale: 'menu.class',
     requiresAuth: true,
     order: 4,
-    roles: [RoleType.admin, RoleType.user],
+    roles: [RoleType.admin,RoleType.classAdvisor],
   },
   // 使用抽屉模式处理添加和编辑操作
 };

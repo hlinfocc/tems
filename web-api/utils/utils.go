@@ -40,6 +40,16 @@ func RandStringBytes(n int, letter bool) string {
 	return string(b)
 }
 
+func RandStringPlusBytes(n int) string {
+	letterBytes := "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!@#$%*_-+.<>"
+	r := rand.New(rand.NewSource(time.Now().UnixNano()))
+	b := make([]byte, n)
+	for i := range b {
+		b[i] = letterBytes[r.Intn(len(letterBytes))]
+	}
+	return string(b)
+}
+
 func CheckPortStatus(port int) bool {
 	// 监听 端口
 	log.Println("check listener Port", port)

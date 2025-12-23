@@ -478,6 +478,9 @@ func GetStudentList(c *gin.Context) {
 		req.PageSize = 10
 	}
 
+	customClaimsRole := c.GetString("customClaimsRole")
+	customClaimsUserId := c.GetUint64("customClaimsUserId")
+
 	// 构建查询参数
 	params := models.StudentQueryParams{
 		StudentName: req.StudentName,
@@ -486,7 +489,9 @@ func GetStudentList(c *gin.Context) {
 		Page:        req.Page,
 		PageSize:    req.PageSize,
 	}
-
+	if customClaimsRole == "classAdvisor" {
+		params.ClassIds = models.GetClassIdByClassAdvisor(customClaimsUserId)
+	}
 	// 查询学生列表
 	students, total, err := models.GetStudentsWithPagination(params)
 	if err != nil {

@@ -44,6 +44,8 @@ func JWTAuthMiddleware(appType int) gin.HandlerFunc {
 			return
 		}
 		c.Set("customClaims", customClaims)
+		c.Set("customClaimsRole", customClaims.Role)
+		c.Set("customClaimsUserId", customClaims.UserID)
 		c.Next()
 	}
 }

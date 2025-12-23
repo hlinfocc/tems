@@ -11,7 +11,7 @@ export default {
     locale: 'menu.board',
     requiresAuth: true,
     order: 1,
-    roles: [RoleType.admin],
+    roles: [RoleType.admin,RoleType.classAdvisor],
   },
   children: [
     {
@@ -24,7 +24,7 @@ export default {
       meta: {
         locale: 'menu.board.home',
         requiresAuth: true,
-        roles: [RoleType.admin],
+        roles: [RoleType.admin,RoleType.classAdvisor],
       },
     },
     {

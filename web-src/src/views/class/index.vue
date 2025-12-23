@@ -128,10 +128,10 @@
                   >
                     课程管理
                   </a>
-                  <a class="operation-item" @click="handleEdit(data.row)">
+                  <a class="operation-item" @click="handleEdit(data.row)" v-if="currAdminRole">
                     编辑
                   </a>
-                  <a class="operation-item" @click="handleDelete(data.row.id)">
+                  <a class="operation-item" @click="handleDelete(data.row.id)" v-if="currAdminRole">
                     删除
                   </a>
                 </template>
@@ -155,6 +155,7 @@
 
 <script lang="ts" setup>
   import type { QueryParmas } from '@/api/class';
+  import { RoleType } from '@/types/roleType';
   import { ref, reactive, toRefs, onMounted, toRaw } from 'vue';
   import {
     Grid as TinyGrid,
@@ -213,6 +214,7 @@
   let tableData = ref([]);
   const gridRef = ref();
   const { loading, filterOptions } = toRefs(state);
+  const currAdminRole = ref(false);
 
   // 请求数据接口方法
   async function fetchData(
@@ -336,6 +338,10 @@
   };
 
   onMounted(() => {
+    const roleCache = localStorage.getItem("USER_ROLE_STORE_STATE") || "";
+    if (roleCache === RoleType.admin){
+        currAdminRole.value = true;
+    }
     reloadGrid();
   });
 </script>

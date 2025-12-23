@@ -7,7 +7,7 @@ type AdminUser struct {
 	Username string `gorm:"column:username;type:varchar(50);uniqueIndex;not null;comment:用户名" json:"username"`
 	Password string `gorm:"column:password;type:text;not null;comment:密码" json:"-"`
 	Status   int    `gorm:"column:status;type:integer;default:0;comment:状态:0启用1禁用" json:"status"`           // 0 启用 1禁用
-	UserType int    `gorm:"column:user_type;type:integer;default:0;comment:用户类型:0管理员1班主任" json:"user_type"` // 0 管理员 1 班主任
+	UserType int    `gorm:"column:user_type;type:integer;default:0;comment:用户类型:0管理员1班主任" json:"user_type"` // 0 管理员 1 老师
 }
 
 // TableName 指定表名

@@ -87,7 +87,7 @@ func GetClassesListByName(className string, simple bool) ([]Class, error) {
 }
 
 // QueryClassesWithPagination 分页查询班级列表
-func QueryClassesWithPagination(page, limit int, keyword string) ([]Class, int64, error) {
+func QueryClassesWithPagination(page, limit int, keyword string, headTeacherID uint64) ([]Class, int64, error) {
 	db := getDB()
 	var classes []Class
 	var count int64
@@ -97,7 +97,9 @@ func QueryClassesWithPagination(page, limit int, keyword string) ([]Class, int64
 
 	// 构建查询条件
 	query := db.Model(&Class{}).Where("is_deleted = ?", false)
-
+	if headTeacherID > 0 {
+		query.Where("head_teacher_id = ?", headTeacherID)
+	}
 	// 如果有关键字，添加模糊匹配条件
 	if keyword != "" {
 		keywordPattern := "%" + keyword + "%"
@@ -118,9 +120,36 @@ func QueryClassesWithPagination(page, limit int, keyword string) ([]Class, int64
 	return classes, count, nil
 }
 
+// 获取所有班级数量
 func GetClassesTotal() (int64, error) {
 	db := getDB()
 	var count int64
 	err := db.Model(&Class{}).Where("is_deleted = ?", false).Count(&count).Error
 	return count, err
+}
+
+// 判断是否是班主任
+func HasClassesAdvisor(userId uint64) bool {
+	db := getDB()
+	var count int64
+	err := db.Model(&Class{}).Where("head_teacher_id=? and is_deleted = ?", userId, false).Count(&count).Error
+	if err != nil {
+		return false
+	}
+	return count > 0
+}
+
+// 获取班主任的班级ID集合
+func GetClassIdByClassAdvisor(userId uint64) []uint64 {
+	db := getDB()
+	var classes []Class
+	err := db.Model(&Class{}).Where("head_teacher_id=? and is_deleted = ?", userId, false).Find(&classes).Error
+	if err != nil {
+		return nil
+	}
+	var classIds []uint64
+	for _, item := range classes {
+		classIds = append(classIds, item.ID)
+	}
+	return classIds
 }

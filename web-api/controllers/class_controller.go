@@ -40,7 +40,12 @@ func GetClassList(c *gin.Context) {
 		})
 		return
 	}
-
+	customClaimsRole := c.GetString("customClaimsRole")
+	customClaimsUserId := c.GetUint64("customClaimsUserId")
+	var headTeacherID uint64 = 0
+	if customClaimsRole == "classAdvisor" {
+		headTeacherID = customClaimsUserId
+	}
 	// 设置默认值
 	if req.Page <= 0 {
 		req.Page = 1
@@ -54,6 +59,7 @@ func GetClassList(c *gin.Context) {
 		req.Page,
 		req.Limit,
 		req.Keyword,
+		headTeacherID,
 	)
 
 	if err != nil {

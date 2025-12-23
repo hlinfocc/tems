@@ -20,11 +20,12 @@ func (Student) TableName() string {
 
 // StudentQueryParams 学生查询参数
 type StudentQueryParams struct {
-	StudentName string `json:"studentName" form:"studentName"`
-	StudentID   string `json:"studentID" form:"studentID"`
-	ClassID     uint64 `json:"classID" form:"classID"`
-	Page        int    `json:"page" form:"page"`
-	PageSize    int    `json:"pageSize" form:"pageSize"`
+	StudentName string   `json:"studentName" form:"studentName"`
+	StudentID   string   `json:"studentID" form:"studentID"`
+	ClassID     uint64   `json:"classID" form:"classID"`
+	Page        int      `json:"page" form:"page"`
+	PageSize    int      `json:"pageSize" form:"pageSize"`
+	ClassIds    []uint64 `json:"classIds" form:"classIds"`
 }
 
 // GetStudentsTotal 获取学生总数
@@ -166,6 +167,9 @@ func GetStudentsWithPagination(params StudentQueryParams) ([]Student, int64, err
 
 	if params.ClassID != 0 {
 		query = query.Where("class_id = ?", params.ClassID)
+	}
+	if len(params.ClassIds) > 0 {
+		query = query.Where("class_id IN ?", params.ClassIds)
 	}
 
 	// 获取总记录数

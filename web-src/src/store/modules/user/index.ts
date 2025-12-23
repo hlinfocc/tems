@@ -33,6 +33,9 @@ const useUserStore = defineStore('user', {
     saveState() {
       localStorage.setItem('USER_INFO_STORE_STATE', JSON.stringify(this.$state));
     },
+    saveRole(roleName: string){
+      localStorage.setItem('USER_ROLE_STORE_STATE', roleName);
+    },
 
     switchRoles() {
       return new Promise((resolve) => {
@@ -46,12 +49,14 @@ const useUserStore = defineStore('user', {
     setInfo(partial: Partial<UserState>) {
       this.$patch(partial);
       this.saveState();
+      this.saveRole(partial.role);
     },
 
     // Reset user's information
     resetInfo() {
       this.$reset();
       localStorage.removeItem('USER_INFO_STORE_STATE');
+      localStorage.removeItem('USER_ROLE_STORE_STATE');
     },
 
     // Reset filter information
